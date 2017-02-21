@@ -6,14 +6,13 @@
     <div class="row">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h1>ご融資可能額の判定フォーム</h1>
-          <p>お客様のご入力した情報、及び専門の機関で用いる指標に基づき、お客様にご融資可能な金額を算定します。</p>
+          <h1>簡易審査判定フォーム</h1>
+          <p>お客様のご入力した情報、及び専門の機関で用いる指標に基づき、お客様のご希望に沿った融資が可能かを審査します。</p>
         </div>
         <div class="panel-body">
           {% if predictedLabel and predictedLabel == "1" %}
           <div class="alert alert-success">
               この内容であれば問題なく融資可能です。<br>
-              ご融資可能な最大額は「　-　」です。<br>
               ぜひ店頭までお越しください。
           </div>
           {% elif predictedLabel and predictedLabel == "0" %}

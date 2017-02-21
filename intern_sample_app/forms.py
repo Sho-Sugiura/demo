@@ -7,6 +7,7 @@ from django.conf import settings
 DEFAULT_AMAZON_ML_ENDPOINT="https://realtime.machinelearning.us-east-1.amazonaws.com"
 
 ANNUAL_INC_CHOICES = (
+    (0, ""),
     (5000, "〜$10,000"),
     (17500, "$10,000〜25,000"),
     (37500, "$25,000〜50,000"),
@@ -18,6 +19,7 @@ ANNUAL_INC_CHOICES = (
 )
 
 INT_RATE_CHOICES = (
+    (0,0, ""),
     (6.0, "7%/年未満"),
     (8.0, "7-9%/年以内"),
     (10.0, "9-11%/年以内"),
@@ -28,6 +30,7 @@ INT_RATE_CHOICES = (
     (28.0, "25%/年以上"),
 )
 BC_OPEN_TO_BUY_CHOICES = (
+    (0, ""),
     (2500, "〜$2,500"),
     (3750, "$2,500〜5,000"),
     (7500, "$5,000〜10,000"),
@@ -39,6 +42,7 @@ BC_OPEN_TO_BUY_CHOICES = (
 )
 
 HOME_OWNERSHIP_CHOICES = (
+    ("", ""),
     ("RENT", "賃貸"),
     ("OWN", "持ち家"),
     ("MORTGAGE", "持ち家(抵当)"),

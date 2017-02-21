@@ -6,19 +6,30 @@
     <div class="row">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <p>簡易審査フォーム</p>
+          <h1>ご融資可能額の判定フォーム</h1>
+          <p>お客様のご入力した情報、及び専門の機関で用いる指標に基づき、お客様にご融資可能な金額を算定します。</p>
         </div>
         <div class="panel-body">
           {% if predictedLabel and predictedLabel == "1" %}
-          <div class="alert alert-success">この内容であれば問題なく融資可能です。ぜひ店頭までお越しください。</div>
+          <div class="alert alert-success">
+              この内容であれば問題なく融資可能です。<br>
+              ご融資可能な最大額は「　{% maxLoanVal %}　」です。<br>
+              ぜひ店頭までお越しください。
+          </div>
           {% elif predictedLabel and predictedLabel == "0" %}
-          <div class="alert alert-info">この情報だけでは融資可否を判断できませんでした。詳細な審査をご希望の方は店頭までお越しください。</div>
+          <div class="alert alert-info">
+              この情報だけでは融資可否を判断できませんでした。<br>
+              詳細な審査をご希望の方は店頭までお越しください。
+          </div>
           {% endif %}
           <form class="form-horizontal" role="form" action="{% url 'exam' %}" method="post">
             {% csrf_token %}
             {{ form|bootstrap_horizontal }}
             <div class="form-group">
               <input class="btn btn-primary center-block" type="submit" value="送信" />
+              <p>※ローングレードやサブグレードについては、平均的なグレードで算出しています。</p>
+              <p>※年収に関して、本来は第三者機関の検証が必要となるため、入力された年収が検証済みであると仮定しています。</p>
+              <p></p>
             </div>
           </form>
         </div>

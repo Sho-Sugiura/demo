@@ -6,19 +6,36 @@ from django.conf import settings
 
 DEFAULT_AMAZON_ML_ENDPOINT="https://realtime.machinelearning.us-east-1.amazonaws.com"
 
-EMP_LENGTH_CHOICES = (
-    (0.0, "無し"),
-    (0.5, "1年未満"),
-    (1.0, "満1年"),
-    (2.0, "満2年"),
-    (3.0, "満3年"),
-    (4.0, "満4年"),
-    (5.0, "満5年"),
-    (6.0, "満6年"),
-    (7.0, "満7年"),
-    (8.0, "満8年"),
-    (9.0, "満9年"),
-    (10.0, "10年以上"),
+ANNUAL_INC_CHOICES = (
+    (5000, "〜$10,000"),
+    (17500, "$10,000〜25,000"),
+    (37500, "$25,000〜50,000"),
+    (75000, "$50,000〜100,000"),
+    (125000, "$100,000〜150,000"),
+    (175000, "$150,000〜200,000"),
+    (425000, "$200,000〜650,000"),
+    (2925000, "$650,000〜"),
+)
+
+INT_RATE_CHOICES = (
+    (6.0, "7%/年未満"),
+    (8.0, "7-9%/年以内"),
+    (10.0, "9-11%/年以内"),
+    (12.0, "11-13%/年以内"),
+    (14.0, "13-15%/年以内"),
+    (17.5, "15-20%/年以内"),
+    (22.5, "20〜25%/年以内"),
+    (28.0, "25%/年以上"),
+)
+BC_OPEN_TO_BUY_CHOICES = (
+    (2500, "〜$2,500"),
+    (3750, "$2,500〜5,000"),
+    (7500, "$5,000〜10,000"),
+    (12500, "$10,000〜15,000"),
+    (17500, "$15,000〜20,000"),
+    (25000, "$20,000〜30,000"),
+    (165000, "$30,000〜300,000"),
+    (850000, "$650,000〜"),
 )
 
 HOME_OWNERSHIP_CHOICES = (
@@ -28,7 +45,6 @@ HOME_OWNERSHIP_CHOICES = (
     ("OTHER", "その他"),
 )
 
-
 class ExaminationForm(forms.Form):
     loan_amnt = forms.DecimalField(
         label="ご希望の融資額($)",
@@ -37,23 +53,23 @@ class ExaminationForm(forms.Form):
         required=True,
         widget=forms.NumberInput()
     )
-    emp_title = forms.CharField(
-        label="職種",
-        max_length=60,
-        required=False,
-        widget=forms.TextInput()
-    )
-    emp_length = forms.ChoiceField(
-        label="勤続年数",
-        choices=EMP_LENGTH_CHOICES,
+    int_rate = forms.ChoiceField(
+        label="ご希望のローン金利",
+        choices=INT_RATE_CHOICES,
         required=True,
         widget=forms.Select()
     )
-    annual_inc = forms.DecimalField(
+    annual_inc = forms.ChoiceField(
         label="年収($)",
-        min_value=0,
+        choices=ANNUAL_INC_CHOICES,
         required=True,
-        widget=forms.NumberInput()
+        widget=forms.Select()
+    )
+    bc_open_to_buy = forms.ChoiceField(
+        label="これまでのリボ払いの最大利用額",
+        choices=BC_OPEN_TO_BUY_CHOICES,
+        required=True,
+        widget=forms.Select()
     )
     home_ownership = forms.ChoiceField(
         label="自宅の所有状況",
@@ -71,10 +87,12 @@ class ExaminationForm(forms.Form):
             "PredictEndpoint": amazon_ml_endpoint,
             "Record": {
                 "loan_amnt": str(self.cleaned_data['loan_amnt']),
-                "emp_title": self.cleaned_data['emp_title'],
-                "emp_length": self.cleaned_data['emp_length'],
+                "int_rate": str(self.cleaned_data['int_rate']),
+                "grade": "3",
+                "sub_grade": "33",
                 "annual_inc": str(self.cleaned_data['annual_inc']),
-                "home_ownership": self.cleaned_data['home_ownership'],
+                "verification_status": str(self.cleaned_data['annual_inc']),
+                "bc_open_to_buy": str(self.cleaned_data['bc_open_to_buy']),
             }
         }
         response = requests.post(api_gateway_endpoint, data=json.dumps(payload))

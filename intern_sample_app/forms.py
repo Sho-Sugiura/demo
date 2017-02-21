@@ -95,7 +95,7 @@ class ExaminationForm(forms.Form):
                 "grade": "3",
                 "sub_grade": "33",
                 "annual_inc": str(self.cleaned_data['annual_inc']),
-                "verification_status": str(self.cleaned_data['annual_inc']),
+                "verification_status": "Source Verified",
                 "bc_open_to_buy": str(self.cleaned_data['bc_open_to_buy']),
             }
         }
